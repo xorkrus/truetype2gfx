@@ -91,10 +91,10 @@ if (isset($_POST["submit-file"])) {
 			height: 429px;
 		}
 		td#second {
-			width: 240px;
+			width: 270px;
 		}
 		td#third {
-			width: 240px;
+			width: 210px;
 		}
 		#textfield {
 			width: 200px;
@@ -135,18 +135,18 @@ if (isset($_POST["submit-file"])) {
 				<form action="" method="post" enctype="multipart/form-data">
 			
 				<h3>FreeFonts</h3>
-				<input type="radio" name="font" value="FreeSans.ttf" checked onChange="updateImage()"> FreeSans<br>
-				<input type="radio" name="font" value="FreeSansBold.ttf" onChange="updateImage()"> FreeSansBold<br>
-				<input type="radio" name="font" value="FreeSansBoldOblique.ttf" onChange="updateImage()"> FreeSansBoldOblique<br>
-				<input type="radio" name="font" value="FreeSansOblique.ttf" onChange="updateImage()"> FreeSansOblique<br>
-				<input type="radio" name="font" value="FreeSerif.ttf" onChange="updateImage()"> FreeSerif<br>
-				<input type="radio" name="font" value="FreeSerifBold.ttf" onChange="updateImage()"> FreeSerifBold<br>
-				<input type="radio" name="font" value="FreeSerifBoldItalic.ttf" onChange="updateImage()"> FreeSerifBoldItalic<br>
-				<input type="radio" name="font" value="FreeSerifItalic.ttf" onChange="updateImage()"> FreeSerifItalic<br>
-				<input type="radio" name="font" value="FreeMono.ttf" onChange="updateImage()"> FreeMono<br>
-				<input type="radio" name="font" value="FreeMonoBold.ttf" onChange="updateImage()"> FreeMonoBold<br>
-				<input type="radio" name="font" value="FreeMonoBoldOblique.ttf" onChange="updateImage()"> FreeMonoBoldOblique<br>
-				<input type="radio" name="font" value="FreeMonoOblique.ttf" onChange="updateImage()"> FreeMonoOblique<br>
+				<input type="radio" name="font" value="FreeSans.ttf" checked onChange="updateImage()">&nbsp;FreeSans<br>
+				<input type="radio" name="font" value="FreeSansBold.ttf" onChange="updateImage()">&nbsp;FreeSansBold<br>
+				<input type="radio" name="font" value="FreeSansBoldOblique.ttf" onChange="updateImage()">&nbsp;FreeSansBoldOblique<br>
+				<input type="radio" name="font" value="FreeSansOblique.ttf" onChange="updateImage()">&nbsp;FreeSansOblique<br>
+				<input type="radio" name="font" value="FreeSerif.ttf" onChange="updateImage()">&nbsp;FreeSerif<br>
+				<input type="radio" name="font" value="FreeSerifBold.ttf" onChange="updateImage()">&nbsp;FreeSerifBold<br>
+				<input type="radio" name="font" value="FreeSerifBoldItalic.ttf" onChange="updateImage()">&nbsp;FreeSerifBoldItalic<br>
+				<input type="radio" name="font" value="FreeSerifItalic.ttf" onChange="updateImage()">&nbsp;FreeSerifItalic<br>
+				<input type="radio" name="font" value="FreeMono.ttf" onChange="updateImage()">&nbsp;FreeMono<br>
+				<input type="radio" name="font" value="FreeMonoBold.ttf" onChange="updateImage()">&nbsp;FreeMonoBold<br>
+				<input type="radio" name="font" value="FreeMonoBoldOblique.ttf" onChange="updateImage()">&nbsp;FreeMonoBoldOblique<br>
+				<input type="radio" name="font" value="FreeMonoOblique.ttf" onChange="updateImage()">&nbsp;FreeMonoOblique<br>
 				
 				<h3>Your fonts</h3>
 				<?php
