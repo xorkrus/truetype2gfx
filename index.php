@@ -6,8 +6,8 @@ if (isset($_GET['reset'])) unset($_SESSION['fonts']);
 
 if (isset($_POST["get-font"])) {
 
-	//if (!isset($_POST['size']) || gettype($_POST['size']) != "integer" || $_POST['size'] < 3) exit();
-	$size = $_POST['size'];
+	if (!isset($_POST['size']) || !is_numeric($_POST['size']) || $_POST['size'] < 3 || $_POST['size'] > 200) exit();
+	$size = intval($_POST['size']);
 
 	if (!isset($_POST['font'])) exit();	
 	$font = escapeshellarg("fonts/" . $_POST['font']);

@@ -10,16 +10,43 @@ header('Cache-Control: no-cache, must-revalidate');
 $im = imagecreatetruecolor(320, 240);
 
 $dpi = 141;
-if (isset($_GET["dpi"])) $dpi = $_GET["dpi"];
+if (isset($_GET["dpi"]) && is_numeric($_GET["dpi"]) && $_GET["dpi"] > 0 && $_GET["dpi"] <= 300) {
+    $dpi = intval($_GET["dpi"]);
+}
 
 $text = 'Testing 123...';
-if (isset($_GET["text"])) $text = $_GET["text"];
+if (isset($_GET["text"])) {
+    $text = htmlspecialchars($_GET["text"], ENT_QUOTES, 'UTF-8');
+    if (strlen($text) > 100) $text = substr($text, 0, 100);
+}
 
 $size = (20 * $dpi) / 96;
-if (isset($_GET["size"])) $size = ($_GET["size"] * $dpi) / 96;
+if (isset($_GET["size"]) && is_numeric($_GET["size"]) && $_GET["size"] >= 3 && $_GET["size"] <= 200) {
+    $size = (intval($_GET["size"]) * $dpi) / 96;
+}
 
 $font = 'FreeSans.ttf';
-if (isset($_GET["font"])) $font = $_GET["font"];
+if (isset($_GET["font"])) {
+    $font = basename($_GET["font"]);
+    // Only allow specific font files
+    $allowed_fonts = [
+        'FreeSans.ttf', 'FreeSansBold.ttf', 'FreeSansBoldOblique.ttf', 'FreeSansOblique.ttf',
+        'FreeSerif.ttf', 'FreeSerifBold.ttf', 'FreeSerifBoldItalic.ttf', 'FreeSerifItalic.ttf',
+        'FreeMono.ttf', 'FreeMonoBold.ttf', 'FreeMonoBoldOblique.ttf', 'FreeMonoOblique.ttf'
+    ];
+    
+    // Check if it's a user font (starts with 'user/')
+    if (strpos($font, 'user/') === 0) {
+        $user_font = basename(substr($font, 5));
+        if (preg_match('/^[a-zA-Z0-9._-]+\\.ttf$/i', $user_font)) {
+            $font = 'user/' . $user_font;
+        } else {
+            $font = 'FreeSans.ttf';
+        }
+    } elseif (!in_array($font, $allowed_fonts)) {
+        $font = 'FreeSans.ttf';
+    }
+}
 
 // Create some colors
 $white = imagecolorallocate($im, 240, 240, 240);
