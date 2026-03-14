@@ -36,3 +36,8 @@ If you are not content with running the version that's on my server because:
 
 3. Make sure the fonts/user directory is writable for the webserver user.
 </details>
+### Переработка для удобства подбора шрифтов под круглый экран GC9A01 1.28" 240*240.
+* Шрифты Free* присутствуют в папке fonts/old/
+* В папке fonts/ только бесплатные шрифты
+* Поддерживается загрузка собственных шрифтов TTF
+* Добавлена функция изменения имени шрифта (имя/внутреннее название/и т.д.)
