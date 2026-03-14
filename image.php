@@ -1,71 +1,70 @@
 <?php
-// Set the enviroment variable for GD
 putenv('GDFONTPATH=' . realpath('./fonts'));
-
-// Set the content-type
 header('Content-Type: image/png');
 header('Cache-Control: no-cache, must-revalidate');
 
-// Create the image
-$im = imagecreatetruecolor(320, 240);
-
-$dpi = 141;
+$width = 240;
+$height = 240;
+$dpi = 265;
 if (isset($_GET["dpi"]) && is_numeric($_GET["dpi"]) && $_GET["dpi"] > 0 && $_GET["dpi"] <= 300) {
     $dpi = intval($_GET["dpi"]);
 }
 
-$text = 'Testing 123...';
+$text = '23:45';
 if (isset($_GET["text"])) {
     $text = htmlspecialchars($_GET["text"], ENT_QUOTES, 'UTF-8');
     if (strlen($text) > 100) $text = substr($text, 0, 100);
 }
 
-$size = (20 * $dpi) / 96;
+$size = (20 * $dpi) / 72;
 if (isset($_GET["size"]) && is_numeric($_GET["size"]) && $_GET["size"] >= 3 && $_GET["size"] <= 200) {
-    $size = (intval($_GET["size"]) * $dpi) / 96;
+    $size = (intval($_GET["size"]) * $dpi) / 72;
 }
 
-$font = 'FreeSans.ttf';
+// --- Определение пути к шрифту (как в предыдущей версии) ---
+$font_file = __DIR__ . '/fonts/FreeSans.ttf';
 if (isset($_GET["font"])) {
-    $font = basename($_GET["font"]);
-    // Only allow specific font files
-    $allowed_fonts = [
-        'FreeSans.ttf', 'FreeSansBold.ttf', 'FreeSansBoldOblique.ttf', 'FreeSansOblique.ttf',
-        'FreeSerif.ttf', 'FreeSerifBold.ttf', 'FreeSerifBoldItalic.ttf', 'FreeSerifItalic.ttf',
-        'FreeMono.ttf', 'FreeMonoBold.ttf', 'FreeMonoBoldOblique.ttf', 'FreeMonoOblique.ttf'
-    ];
-    
-    // Check if it's a user font (starts with 'user/')
-    if (strpos($font, 'user/') === 0) {
-        $user_font = basename(substr($font, 5));
+    $font_param = $_GET["font"];
+    if (strpos($font_param, 'user/') === 0) {
+        $user_font = basename(substr($font_param, 5));
         if (preg_match('/^[a-zA-Z0-9._-]+\\.ttf$/i', $user_font)) {
-            $font = 'user/' . $user_font;
-        } else {
-            $font = 'FreeSans.ttf';
+            $full_path = __DIR__ . '/fonts/user/' . $user_font;
+            if (file_exists($full_path)) $font_file = $full_path;
         }
-    } elseif (!in_array($font, $allowed_fonts)) {
-        $font = 'FreeSans.ttf';
+    } else {
+        $sys_font = basename($font_param);
+        if (preg_match('/^[a-zA-Z0-9._-]+\\.ttf$/i', $sys_font)) {
+            $full_path = __DIR__ . '/fonts/' . $sys_font;
+            if (file_exists($full_path)) $font_file = $full_path;
+        }
     }
 }
+if (!file_exists($font_file)) $font_file = __DIR__ . '/fonts/FreeSans.ttf';
 
-// Create some colors
-$white = imagecolorallocate($im, 240, 240, 240);
+// --- Создаём изображение с прозрачным фоном ---
+$im = imagecreatetruecolor($width, $height);
+imagealphablending($im, false);
+imagesavealpha($im, true);
+$transparent = imagecolorallocatealpha($im, 0, 0, 0, 127); // полностью прозрачный
+imagefill($im, 0, 0, $transparent);
+
+// Рисуем белый круг (экран)
+$white = imagecolorallocate($im, 255, 255, 255);
+imagefilledellipse($im, 120, 120, 240, 240, $white);
+
+// Рисуем текст чёрным поверх круга
 $black = imagecolorallocate($im, 0, 0, 0);
-imagefilledrectangle($im, 0, 0, 319, 239, $white);
-
-// First we create our bounding box for the first text
-$bbox = imagettfbbox($size, 0, $font, $text);
-
-// Center text
+$bbox = imagettfbbox($size, 0, $font_file, $text);
+if ($bbox === false) {
+    $font_file = __DIR__ . '/fonts/FreeSans.ttf';
+    $bbox = imagettfbbox($size, 0, $font_file, $text);
+}
 $w = abs($bbox[4] - $bbox[0]);
+$cx = ($width / 2) - ($w / 2) - ($bbox[0] / 2);
+$cy = ($height / 2) - ($bbox[5] / 2) - ($bbox[1] / 2);
+imagettftext($im, $size, 0, $cx, $cy, $black, $font_file, $text);
 
-$cx = (imagesx($im) / 2) - ($w / 2) - ($bbox[0] / 2);
-$cy = (imagesy($im) / 2) - ($bbox[5] / 2) - ($bbox[1] / 2);
-
-// Add the text
-imagettftext($im, $size, 0, $cx, $cy, $black, $font, $text);
-
-// Using imagepng() results in clearer text compared with imagejpeg()
+// Выводим PNG с прозрачностью
 imagepng($im);
 imagedestroy($im);
 ?>
