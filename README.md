@@ -1,3 +1,5 @@
+<details>
+  <summary>Оригинальное описание автора</summary>  
 # truetype2gfx
 
 ### Converting fonts from TrueType to Adafruit GFX
@@ -33,3 +35,4 @@ If you are not content with running the version that's on my server because:
 2. In this directory, add a compiled version of the Adafruit `fontconvert` tool (see [here](https://github.com/adafruit/Adafruit-GFX-Library/tree/master/fontconvert)) and make sure it it executable to the user that runs your webserver. 
 
 3. Make sure the fonts/user directory is writable for the webserver user.
+</details>
